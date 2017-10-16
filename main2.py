@@ -18,6 +18,8 @@ import codecs
 import os
 
 def excel2json(path):
+    # xlrd.Book.encoding = "gbk"
+    # path = path.decode('utf-8')
     wb = xlrd.open_workbook(path)
 
     convert_list = []
@@ -38,7 +40,9 @@ if __name__ == '__main__':
     rootdir =os.path.abspath(os.path.dirname(__file__))
     origindir = os.path.join(rootdir,'origins')
     for path in os.listdir(origindir):
-        print 'running...',path
+        print 'running...', path
+        if path.startswith('.'):
+            continue
         j = excel2json(os.path.join(origindir,path))
-        with codecs.open('output/'+path.split('.')[0].split('/')[-1]+'.json', "w", "utf-8") as f:
+        with codecs.open('output/'+path.split('_')[0]+'.json', "w", "utf-8") as f:
             f.write(j)
